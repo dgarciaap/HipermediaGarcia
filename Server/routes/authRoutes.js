@@ -11,4 +11,14 @@ app.get('/auth/google', passport.authenticate('google', {
 
 //passport will do something with the code and return a token (arrow function in passport.use GoogleStrategy)
 app.get('/auth/google/callback', passport.authenticate('google'));
+    //logging out
+    app.get('/api/logout', (req, res) => {
+        req.logout();
+        res.send(req.user);
+    });
+
+    //Get cookie
+    app.get('/api/current_user', (req, res) => {
+        res.send(req.user);
+    });
 };
