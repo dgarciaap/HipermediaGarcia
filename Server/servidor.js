@@ -3,12 +3,17 @@ const mongoose = require('mongoose');
 const keys = require('./config/keys');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
+var proxy = require('http-proxy-middleware');
 //We need to load the schema and then passport(we need the schema in there)
 require('./models/User');
 require('./services/passport');
 
 
 const app = express();
+
+app.use(proxy("auth/google/callback", { target: 'http://localhost:5000', changeOrigin: true }))
+app.use(proxy("auth/google", { target: 'http://localhost:5000', changeOrigin: true }))
+app.use(proxy("api/current_user", { target: 'http://localhost:5000', changeOrigin: true }))
 
 //CookieSession configuration
 app.use(

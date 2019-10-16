@@ -26,7 +26,8 @@ passport.use(new GoogleStrategy(
         clientID: keys.googleClientID,
         clientSecret: keys.googleClientSecret,
         //add routeHandler (Added below)
-        callbackURL: '/auth/google/callback'
+        callbackURL: '/auth/google/callback',
+        proxy: true
         //google returns an accessToken (profile contains google user's id)
     }, (accessToken, refreshToken, profile, done) => {
         //Look if it's already in our db (it returns a promise)
