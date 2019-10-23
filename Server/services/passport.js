@@ -29,20 +29,20 @@ passport.use(new GoogleStrategy(
         callbackURL: '/auth/google/callback',
         proxy: true
         //google returns an accessToken (profile contains google user's id)
-    }, (accessToken, refreshToken, profile, done) => {
+        //Identify function and write async
+    }, async (accessToken, refreshToken, profile, done) => {
         //Look if it's already in our db (it returns a promise)
-        User.findOne({googleId: profile.id})
-            .then((existingUser) => {
-                if(existingUser) {
-                    // we already have a record with the given profile id
-                    done(null, existingUser);
-                } else {
-                    //create a new one if there is none and save it into mongoose
-                    new User({ googleId: profile.id })
-                        .save()
-                        .then(user => done(null, user)); 
-                }
-            });
+        //Identify promise and write await. Assign it to a variable
+        const existingUser = await User.findOne({googleId: profile.id});
+
+        if(existingUser) {
+            // we already have a record with the given profile id
+            return done(null, existingUser);
+        } 
+        //create a new one if there is none and save it into mongoose
+        //Identify promise and write await. Assign it to a variable
+        const user = await new User({ googleId: profile.id }).save();
+        done(null, user);
         }
     )
 );
